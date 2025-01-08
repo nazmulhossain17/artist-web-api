@@ -39,7 +39,23 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({ message: "Login successful" });
 }
 
+const updateUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+    const user = await User.findByIdAndUpdate(id, { name, email, password }, { new: true });
+    res.status(200).json({ message: "User updated successfully", user });
+}
+
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.status(200).json({ message: "User deleted successfully" });
+}
+
+
 export const userController = {
     createUser,
-    loginUser
+    loginUser,
+    updateUser,
+    deleteUser
 }
