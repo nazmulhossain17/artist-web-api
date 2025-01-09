@@ -13,28 +13,53 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// const createWork = async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     console.log("Received request to create work");
+
+//     const file = req.files?.photo as UploadedFile;
+//     if (!file) {
+//       console.log("No photo provided");
+//       res.status(400).json({ message: "Photo is required" });
+//       return;
+//     }
+
+//     console.log("Uploading image to Cloudinary");
+//     const result = await cloudinary.v2.uploader.upload(file.tempFilePath);
+//     console.log("Image uploaded to Cloudinary", result);
+
+//     const { title, tags } = req.body;
+//     const image = result.url; // The URL of the uploaded image
+
+//     // Validate required fields
+//     if (!title || !tags) {
+//       console.log("Missing title or tags");
+//       res.status(400).json({ message: "Title and tags are required" });
+//       return;
+//     }
+
+//     // Create work document in database
+//     const work = await Work.create({ title, image, tags });
+//     console.log("Work created successfully", work);
+
+//     res.status(201).json({ message: "Work created successfully", work });
+//   } catch (error: any) {
+//     console.error("Error creating work:", error);
+//     res.status(500).json({ message: "Error creating work", error: error.message || error });
+//   }
+// }
+
+
 const createWork = async (req: Request, res: Response): Promise<void> => {
   try {
     console.log("Received request to create work");
 
-    const file = req.files?.photo as UploadedFile;
-    if (!file) {
-      console.log("No photo provided");
-      res.status(400).json({ message: "Photo is required" });
-      return;
-    }
-
-    console.log("Uploading image to Cloudinary");
-    const result = await cloudinary.v2.uploader.upload(file.tempFilePath);
-    console.log("Image uploaded to Cloudinary", result);
-
-    const { title, tags } = req.body;
-    const image = result.url; // The URL of the uploaded image
+    const { title, tags, image } = req.body; // Assume image is a string in the request body
 
     // Validate required fields
-    if (!title || !tags) {
-      console.log("Missing title or tags");
-      res.status(400).json({ message: "Title and tags are required" });
+    if (!title || !tags || !image) {
+      console.log("Missing title, tags, or image");
+      res.status(400).json({ message: "Title, tags, and image are required" });
       return;
     }
 
