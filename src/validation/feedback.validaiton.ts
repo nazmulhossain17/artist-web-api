@@ -16,4 +16,11 @@ const updateWorkSchema = z.object({
     })
 })
 
-export { updateFeedbackSchema, updateWorkSchema };
+const updateContentSchema = z.object({
+    body: z.object({
+        section: z.string().optional(),
+        data: z.any().optional(),
+    })
+})
+
+export { updateFeedbackSchema, updateWorkSchema, updateContentSchema };
